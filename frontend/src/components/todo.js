@@ -7,18 +7,15 @@ import Field from "../ui/Field";
 export default function Todo({ todo, onUpdate, onDelete }) {
   const handelDelete = async function (e) {
     e.preventDefault();
-    console.log("test");
     await onDelete(todo);
   };
 
   const handelUpdate = async function (e) {
     e.preventDefault();
-    let form = formToJson(e.target);
-
-    await onUpdate(todo, form);
+    const value = e.target.task.value;
+    await onUpdate(todo, value);
   };
-  console.log("sb");
-  console.log(todo);
+
 
   return (
     <form

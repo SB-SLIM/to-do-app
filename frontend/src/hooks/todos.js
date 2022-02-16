@@ -1,11 +1,12 @@
 import { useCallback, useReducer } from "react";
 import { apiFetch } from "../api/apiFeach";
 
-export const FETCH_TODOS_REQUEST = "FETCH_TODOS_REQUEST";
-export const FETCH_TODOS_RESPONSE = "FETCH_TODOS_RESPONSE";
-export const DELETE_TODOS = "DELETE_TODOS";
-export const ADD_TODOS = "ADD_TODOS";
-export const UPDATE_TODOS = "UPDATE_TODOS";
+const FETCH_TODOS_REQUEST = "FETCH_TODOS_REQUEST";
+const FETCH_TODOS_RESPONSE = "FETCH_TODOS_RESPONSE";
+const DELETE_TODOS = "DELETE_TODOS";
+const ADD_TODOS = "ADD_TODOS";
+const UPDATE_TODOS = "UPDATE_TODOS";
+const CHANGE_ADDVALUE = "CHANGE_ADDVALUE";
 
 function reducer(state, action) {
   console.log("TODOS REDUCE", action.type, action);
@@ -32,19 +33,25 @@ function reducer(state, action) {
           i === action.target ? { ...i, ...action.payload } : i
         ),
       };
+    case CHANGE_ADDVALUE:
+      return { ...state, addValue: action.payload };
     default:
       break;
   }
 }
+
+const initialState = {
+  loading: false,
+  todos: null,
+  addValue: null,
+};
 export function useTodos() {
-  const [state, dispatch] = useReducer(reducer, {
-    loading: false,
-    todos: null,
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return {
     loading: state.loading,
     todos: state.todos,
+    addValue: state.addValue,
     fetchTodos: useCallback(
       async function () {
         if (state.todos !== null) {
@@ -52,7 +59,6 @@ export function useTodos() {
         }
         dispatch({ type: FETCH_TODOS_REQUEST });
         const data = await apiFetch("/tasks");
-        console.log(data.tasks);
         dispatch({ type: FETCH_TODOS_RESPONSE, payload: data.tasks });
       },
       [state.todos]
@@ -65,19 +71,20 @@ export function useTodos() {
     }, []),
     updateTodos: useCallback(async function (todo, data) {
       dispatch({ type: UPDATE_TODOS, target: todo, payload: data });
-      console.log("update data: " + data);
       await apiFetch("/tasks/" + todo._id, {
-        method: "put",
-        body: data,
+        method: "patch",
+        body: JSON.stringify({ name: data }),
       });
     }, []),
     createTodos: async function (data) {
-      console.log("hook data" + data);
       const todo = await apiFetch("/tasks", {
         method: "post",
-        body: data,
+        body: JSON.stringify({ name: data }),
       });
       dispatch({ type: ADD_TODOS, payload: todo });
+    },
+    changeAddValue: (value) => {
+      dispatch({ type: CHANGE_ADDVALUE, payload: value });
     },
   };
 }

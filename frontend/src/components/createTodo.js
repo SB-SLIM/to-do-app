@@ -1,21 +1,25 @@
+import { useContext } from "react";
 import { formToJson } from "../api/apiFeach";
+import { TaskContext } from "../context/tasksContext";
 import Button from "../ui/button";
 import Field from "../ui/Field";
 
 export default function AddTodo({ onAdd }) {
+  const { addValue, changeAddValue } = useContext(TaskContext);
+
+  const handleChange = (e) => {
+    changeAddValue(e.target.value);
+  };
+
   const handleSubmit = async function (e) {
     e.preventDefault();
     const form = e.target;
-    try {
-      await onAdd(formToJson(form));
-    } catch (e) {
-      console.error(e);
-    }
+    onAdd(addValue);
     form.reset();
   };
   return (
     <form onSubmit={handleSubmit} className="d-flex justify-content-center">
-      <Field name="task" />
+      <Field name="task" value={addValue} handleChange={handleChange} />
       <Button type="submit">
         <svg
           xmlns="http://www.w3.org/2000/svg"

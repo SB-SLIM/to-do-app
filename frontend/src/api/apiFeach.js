@@ -3,8 +3,7 @@ const API_URL = "http://localhost:3001/api/v1";
 export async function apiFetch(endpoint, options) {
   const response = await fetch(API_URL + endpoint, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-type": "application/json",
     },
     ...options,
   });

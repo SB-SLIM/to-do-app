@@ -1,7 +1,8 @@
 import React from "react";
+
 import "./field.css";
 
-export default function Field({ value, readonly, name }) {
+export default function Field({ value, readonly, name, handleChange }) {
   console.log(value);
   const handleDoubleClick = (e) => {
     readonly = false;
@@ -17,6 +18,7 @@ export default function Field({ value, readonly, name }) {
           defaultValue={value}
           onDoubleClick={handleDoubleClick}
           readOnly
+          onChange={handleChange}
         />
       ) : (
         <input
@@ -25,6 +27,7 @@ export default function Field({ value, readonly, name }) {
           className="bg-color text-white p-2"
           m-2
           defaultValue={value}
+          onChange={handleChange}
         />
       )}
     </div>
