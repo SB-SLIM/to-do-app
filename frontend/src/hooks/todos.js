@@ -86,7 +86,7 @@ export function useTodos() {
         method: "post",
         body: JSON.stringify({ name: data }),
       });
-      dispatch({ type: ADD_TODOS, payload: todo });
+      dispatch({ type: ADD_TODOS, payload: todo.task });
     },
     changeAddValue: (value) => {
       dispatch({ type: CHANGE_ADDVALUE, payload: value });
