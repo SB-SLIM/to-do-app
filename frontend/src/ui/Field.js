@@ -1,9 +1,7 @@
 import React from "react";
-
 import "./field.css";
 
 export default function Field({ value, readonly, name, handleChange }) {
-  console.log(value);
   const handleDoubleClick = (e) => {
     readonly = false;
     e.target.removeAttribute("readOnly");

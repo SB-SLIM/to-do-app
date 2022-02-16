@@ -32,7 +32,7 @@ const deleteTask = async (req, res) => {
 };
 const updateTask = async (req, res) => {
   const { id: taskID } = req.params;
-
+console.log(req.body);
   const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
     new: true,
     runValidators: true,

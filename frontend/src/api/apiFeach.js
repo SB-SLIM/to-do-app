@@ -23,6 +23,3 @@ export async function apiFetch(endpoint, options) {
     throw responseData;
   }
 }
-
-
-

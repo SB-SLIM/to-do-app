@@ -9,7 +9,6 @@ const UPDATE_TODOS = "UPDATE_TODOS";
 const CHANGE_ADDVALUE = "CHANGE_ADDVALUE";
 
 function reducer(state, action) {
-  console.log("TODOS REDUCE", action.type, action);
   switch (action.type) {
     case FETCH_TODOS_REQUEST:
       return { ...state, loading: true };
@@ -56,17 +55,14 @@ export function useTodos() {
     loading: state.loading,
     todos: state.todos,
     addValue: state.addValue,
-    fetchTodos: useCallback(
-      async function () {
-        if (state.todos !== null) {
-          return null;
-        }
-        dispatch({ type: FETCH_TODOS_REQUEST });
-        const data = await apiFetch("/tasks");
-        dispatch({ type: FETCH_TODOS_RESPONSE, payload: data.tasks });
-      },
-      [state.todos]
-    ),
+    fetchTodos: async function () {
+      if (state.todos !== null) {
+        return null;
+      }
+      dispatch({ type: FETCH_TODOS_REQUEST });
+      const data = await apiFetch("/tasks");
+      dispatch({ type: FETCH_TODOS_RESPONSE, payload: data.tasks });
+    },
     deleteTodo: useCallback(async function (todo) {
       dispatch({ type: DELETE_TODOS, payload: todo });
       await apiFetch("/tasks/" + todo._id, {
@@ -76,7 +72,7 @@ export function useTodos() {
     updateTodos: useCallback(async function (todo, data) {
       dispatch({ type: UPDATE_TODOS, target: todo, payload: data });
       await apiFetch("/tasks/" + todo._id, {
-        method: "patch",
+        method: "PATCH",
         body: JSON.stringify({ name: data }),
       });
     }, []),
