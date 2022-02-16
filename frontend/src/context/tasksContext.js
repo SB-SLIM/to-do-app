@@ -17,7 +17,7 @@ const TaskProvider = ({ children }) => {
 
   useEffect(() => {
     fetchTodos();
-  }, [createTodos]);
+  }, [fetchTodos, todos]);
 
   return (
     <TaskContext.Provider

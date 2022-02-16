@@ -14,7 +14,7 @@ export default function AddTodo({ onAdd }) {
   const handleSubmit = async function (e) {
     e.preventDefault();
     const form = e.target;
-    onAdd(addValue);
+    await onAdd(addValue);
     form.reset();
   };
   return (

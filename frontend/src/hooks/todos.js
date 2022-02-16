@@ -25,7 +25,11 @@ function reducer(state, action) {
         todos: state.todos.filter((i) => i !== action.payload),
       };
     case ADD_TODOS:
-      return { ...state, todos: [...state.todos, action.payload] };
+      return {
+        ...state,
+        todos: [...state.todos, action.payload],
+        loading: false,
+      };
     case UPDATE_TODOS:
       return {
         ...state,
@@ -77,6 +81,7 @@ export function useTodos() {
       });
     }, []),
     createTodos: async function (data) {
+      dispatch({ type: FETCH_TODOS_REQUEST });
       const todo = await apiFetch("/tasks", {
         method: "post",
         body: JSON.stringify({ name: data }),

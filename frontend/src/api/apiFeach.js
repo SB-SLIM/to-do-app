@@ -24,10 +24,5 @@ export async function apiFetch(endpoint, options) {
   }
 }
 
-export function formToJson(element) {
-  return JSON.stringify(formToObject(element));
-}
 
-export function formToObject(element) {
-  return Object.fromEntries(new FormData(element));
-}
+
